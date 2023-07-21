@@ -5,21 +5,27 @@ using DG.Tweening;
 
 public class Player : MonoBehaviour
 {
-    public float animDuration;
-    public Vector3 scale;
+    public Rigidbody2D rig2D;
+    public float speed;
 
-    void Update()
+    private void FixedUpdate()
     {
-        BigPlayer();
+        Move();
     }
 
-    private void BigPlayer()
+    private void Move()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        var h = Input.GetAxisRaw("Horizontal");
+
+        if (h > 0)
         {
-            float scaleBack = transform.localScale.x;
-            transform.localScale = scale;
-            transform.DOScale(scaleBack, animDuration).From();
+            //rig2D.velocity = new Vector2(speed,transform.position.y);
+            transform.Translate(speed*Time.deltaTime,0,0);
+        }
+        if (h < 0)
+        {
+            //rig2D.velocity = new Vector2(-speed,transform.position.y);
+            transform.Translate(-speed * Time.deltaTime, 0, 0);
         }
     }
 }
