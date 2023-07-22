@@ -6,7 +6,8 @@ using DG.Tweening;
 public class Player : MonoBehaviour
 {
     public Rigidbody2D rig2D;
-    public float speed, forceJump;
+    public float speed, speedRun, forceJump;
+    private float _speedCurrent;
 
     private void FixedUpdate()
     {
@@ -16,15 +17,22 @@ public class Player : MonoBehaviour
 
     private void Move()
     {
-        var h = Input.GetAxisRaw("Horizontal");
-
-        if (h > 0)
+        if (Input.GetKey(KeyCode.LeftShift))
         {
-            rig2D.velocity = new Vector2(speed,rig2D.velocity.y);
+            _speedCurrent = speedRun;
         }
-        if (h < 0)
+        else
         {
-            rig2D.velocity = new Vector2(-speed,rig2D.velocity.y);
+            _speedCurrent = speed;
+;        }
+
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            rig2D.velocity = new Vector2(_speedCurrent, rig2D.velocity.y);
+        }
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            rig2D.velocity = new Vector2(-_speedCurrent, rig2D.velocity.y);
         }
 
         if (rig2D.velocity.x > 0)
@@ -39,9 +47,9 @@ public class Player : MonoBehaviour
 
     private void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            rig2D.AddForce(transform.up * forceJump,ForceMode2D.Impulse);
+            rig2D.velocity = Vector2.up * forceJump;
         }
     }
 }
