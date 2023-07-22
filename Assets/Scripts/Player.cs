@@ -5,6 +5,9 @@ using DG.Tweening;
 
 public class Player : MonoBehaviour
 {
+    [Header("Outros Scripts")]
+    private GameManager gameManager;
+
     [Header("Config.Movement e Jump")]
     public BoxCollider2D boxCollider2D;
     public Rigidbody2D rig2D;
@@ -15,6 +18,20 @@ public class Player : MonoBehaviour
     [Header("Animation Jump")]
     public Vector2 scaleJump;
     public float animDuration;
+
+    [Header("Vida")]
+    public float healt;
+    public float delayDamage;
+    public SpriteRenderer spriteRendererPlayer;
+    public Color colorDamage;
+    private Color _colorAtual;
+
+    private void Start()
+    {
+        _colorAtual = spriteRendererPlayer.color;
+        gameManager = GameObject.FindObjectOfType<GameManager>();
+        Cursor.lockState = CursorLockMode.Locked;
+    }
 
     private void FixedUpdate()
     {
@@ -67,5 +84,29 @@ public class Player : MonoBehaviour
         DOTween.Kill(transform);
         transform.DOScaleX(scaleJump.x, animDuration).SetLoops(2,LoopType.Yoyo).SetEase(Ease.OutBack);
         transform.DOScaleY(scaleJump.y, animDuration).SetLoops(2,LoopType.Yoyo).SetEase(Ease.OutBack);
+    }
+
+    public void damage(float dano)
+    {
+        spriteRendererPlayer.color = colorDamage;
+        Invoke(nameof(DamageColor), delayDamage);
+        healt -= dano;
+        if (healt <= 0)
+        {
+            Kill();
+        }
+    }
+
+    private void DamageColor()
+    {
+        spriteRendererPlayer.color = _colorAtual;
+    }
+
+    private void Kill()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        gameManager.StartCoroutine(gameManager.GameOver());
+        healt = 0;
+        Destroy(gameObject);
     }
 }
