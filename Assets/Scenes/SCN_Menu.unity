@@ -4283,7 +4283,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6368415427640150073, guid: 178055a1b53ed9d44b235534302c3976, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: SCN_Art
+      value: SCN_Teste
       objectReference: {fileID: 0}
     - target: {fileID: 6368415427640150073, guid: 178055a1b53ed9d44b235534302c3976, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
