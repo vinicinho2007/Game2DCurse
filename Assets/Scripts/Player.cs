@@ -7,36 +7,37 @@ public class Player : MonoBehaviour
 {
     [Header("Outros Scripts")]
     private GameManager gameManager;
+    private bool kill;
 
     [Header("Config.Movement e Jump")]
-    public BoxCollider2D boxCollider2D;
     public Rigidbody2D rig2D;
     public float speed, speedRun, forceJump;
     public Vector2 friction;
     private float _speedCurrent;
 
-    [Header("Animation Jump")]
-    public Vector2 scaleJump;
-    public float animDuration;
+    [Header("Animation")]
+    public Animator anim;
+    public string moveAnim, jumpAnim, jumpTriggerGroundAnim, animKill, nameRun, nameSpeedRun;
+    public float tempDelayKill;
+    private bool moveAnimBool;
+    private float posY;
 
     [Header("Vida")]
     public float healt;
-    public float delayDamage;
-    public SpriteRenderer spriteRendererPlayer;
-    public Color colorDamage;
-    private Color _colorAtual;
 
     private void Start()
     {
-        _colorAtual = spriteRendererPlayer.color;
         gameManager = GameObject.FindObjectOfType<GameManager>();
         Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void FixedUpdate()
     {
-        Jump();
-        Move();
+        if (!kill)
+        {
+            Jump();
+            Move();
+        }
     }
 
     private void Move()
@@ -44,19 +45,32 @@ public class Player : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift))
         {
             _speedCurrent = speedRun;
+            moveAnim = nameSpeedRun;
         }
         else
         {
             _speedCurrent = speed;
-;        }
+            moveAnim = nameRun;
+        }
+
+        if (Input.GetAxisRaw("Horizontal") != 0 && !moveAnimBool)
+        {
+            anim.SetBool(moveAnim, true);
+        }
+        else
+        {
+            anim.SetBool(moveAnim, false);
+        }
 
         if (Input.GetKey(KeyCode.RightArrow))
         {
             rig2D.velocity = new Vector2(_speedCurrent, rig2D.velocity.y);
+            transform.DORotate(new Vector3(0, 0, 0), 0.1f);
         }
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             rig2D.velocity = new Vector2(-_speedCurrent, rig2D.velocity.y);
+            transform.DORotate(new Vector3(0, 180, 0), 0.1f);
         }
 
         if (rig2D.velocity.x > 0)
@@ -74,32 +88,45 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             rig2D.velocity = transform.up * forceJump;
-            AnimationJumpTo();
+            moveAnimBool = true;
+            posY = transform.position.y;
+            Invoke(nameof(AnimationJumpTo),0.01f);
         }
     }
 
     private void AnimationJumpTo()
     {
-        transform.localScale = Vector2.one;
-        DOTween.Kill(transform);
-        transform.DOScaleX(scaleJump.x, animDuration).SetLoops(2,LoopType.Yoyo).SetEase(Ease.OutBack);
-        transform.DOScaleY(scaleJump.y, animDuration).SetLoops(2,LoopType.Yoyo).SetEase(Ease.OutBack);
+        if (transform.position.y > posY)
+        {
+            anim.SetBool(jumpAnim, true);
+            posY = transform.position.y;
+            Invoke(nameof(AnimationJumpTo), 0.01f);
+        }
+        else
+        {
+            anim.SetBool(jumpAnim, false);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground") && moveAnimBool)
+        {
+            anim.SetTrigger(jumpTriggerGroundAnim);
+            moveAnimBool = false;
+        }
     }
 
     public void damage(float dano)
     {
-        spriteRendererPlayer.color = colorDamage;
-        Invoke(nameof(DamageColor), delayDamage);
         healt -= dano;
         if (healt <= 0)
         {
-            Kill();
+            kill = true;
+            moveAnimBool = false;
+            anim.SetTrigger(animKill);
+            Invoke(nameof(Kill),tempDelayKill);
         }
-    }
-
-    private void DamageColor()
-    {
-        spriteRendererPlayer.color = _colorAtual;
     }
 
     private void Kill()
@@ -107,6 +134,7 @@ public class Player : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         gameManager.StartCoroutine(gameManager.GameOver());
         healt = 0;
-        Destroy(gameObject);
+        Destroy(rig2D);
+        Destroy(this);
     }
 }
