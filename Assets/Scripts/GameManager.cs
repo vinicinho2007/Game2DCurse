@@ -5,15 +5,25 @@ using DG.Tweening;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("GameManager")]
     public static GameManager instante;
-    public GameObject prefPlayer, gameOver;
+
+    [Header("Player")]
     public Transform position;
-    public float animDuration, delayOpenGameOver, animDurationGameOver;
-    private List<GameObject> objs;
+    public GameObject prefPlayer;
+    public float animDuration;
+
+    [Header("GameOver")]
+    public GameObject gameOver;
+    public float animDurationGameOver;
+
+    [Header("MenuPause")]
+    public bool menuPauseBool;
+    public GameObject menuPause;
+    public float animDurationMenuPause;
 
     private void Start()
     {
-        objs = new List<GameObject>();
         if (instante == null)
         {
             instante = this;
@@ -24,29 +34,73 @@ public class GameManager : MonoBehaviour
         }
         StartPlayer();
     }
-
     private void StartPlayer()
     {
         GameObject obj = Instantiate(prefPlayer, position);
         obj.transform.DOScale(0, animDuration).From();
     }
 
-    public IEnumerator GameOver()
+    private void Update()
     {
-        gameOver.SetActive(true);
-        foreach (Transform obj in gameOver.GetComponentsInChildren<Transform>())
+        if (Input.GetKeyDown(KeyCode.Escape)&&!menuPauseBool)
         {
-            if (obj != gameOver.transform&&obj.gameObject.activeInHierarchy)
+            MenuPause();
+        }
+    }
+
+    public void MenuPause()
+    {
+        if (!menuPause.activeInHierarchy && !gameOver.activeInHierarchy)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            StartCoroutine(CoroutineAnim(menuPause, animDurationMenuPause));
+        }
+        else if (menuPause.activeInHierarchy)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            menuPause.SetActive(false);
+        }
+    }
+
+    private List<GameObject> AddsObjsAnimacao(GameObject obj)
+    {
+        List<GameObject> objs = new List<GameObject>();
+        foreach (Transform t in obj.GetComponentsInChildren<Transform>())
+        {
+            if (t != obj.transform)
             {
-                objs.Add(obj.gameObject);
-                obj.gameObject.SetActive(false);
+                objs.Add(t.gameObject);
+                t.gameObject.SetActive(false);
             }
         }
-        yield return new WaitForSeconds(delayOpenGameOver);
-        for(int i =0;i<objs.Count;i++)
+        return objs;
+    }
+
+    private void Animacao(float durationAnim, List<GameObject> listObjs)
+    {
+        for (int i = 0; i < listObjs.Count; i++)
         {
-            objs[i].gameObject.SetActive(true);
-            objs[i].transform.DOScale(0, animDurationGameOver).From();
+            listObjs[i].gameObject.SetActive(true);
+            listObjs[i].transform.DOScale(0, durationAnim).From();
         }
+    }
+
+    public void GameOver()
+    {
+        if (menuPause.activeInHierarchy)
+        {
+            AddsObjsAnimacao(menuPause);
+            menuPause.SetActive(false);
+        }
+        Cursor.lockState = CursorLockMode.None;
+        StartCoroutine(CoroutineAnim(gameOver, animDurationGameOver));
+    }
+
+    private IEnumerator CoroutineAnim(GameObject obj, float durationAnim)
+    {
+        obj.SetActive(true);
+        List<GameObject> listObjs = AddsObjsAnimacao(obj);
+        yield return new WaitForSeconds(0);
+        Animacao(durationAnim, listObjs);
     }
 }

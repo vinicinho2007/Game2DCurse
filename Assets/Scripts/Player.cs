@@ -131,8 +131,7 @@ public class Player : MonoBehaviour
 
     private void Kill()
     {
-        Cursor.lockState = CursorLockMode.None;
-        gameManager.StartCoroutine(gameManager.GameOver());
+        gameManager.GameOver();
         healt = 0;
         Destroy(rig2D);
         Destroy(this);
