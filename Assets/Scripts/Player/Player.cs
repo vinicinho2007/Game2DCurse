@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     private bool kill;
 
     [Header("Config.Movement e Jump")]
+    public bool turned;
     public Rigidbody2D rig2D;
     public float speed, speedRun, forceJump;
     public Vector2 friction;
@@ -23,7 +24,9 @@ public class Player : MonoBehaviour
     private float posY;
 
     [Header("Vida")]
+    public bool invincible;
     public float healt;
+    public DamageColor damageColor;
 
     private void Start()
     {
@@ -64,11 +67,13 @@ public class Player : MonoBehaviour
 
         if (Input.GetKey(KeyCode.RightArrow))
         {
+            turned = false;
             rig2D.velocity = new Vector2(_speedCurrent, rig2D.velocity.y);
             transform.DORotate(new Vector3(0, 0, 0), 0.1f);
         }
         if (Input.GetKey(KeyCode.LeftArrow))
         {
+            turned = true;
             rig2D.velocity = new Vector2(-_speedCurrent, rig2D.velocity.y);
             transform.DORotate(new Vector3(0, 180, 0), 0.1f);
         }
@@ -119,7 +124,11 @@ public class Player : MonoBehaviour
 
     public void damage(float dano)
     {
-        healt -= dano;
+        if (!invincible)
+        {
+            healt -= dano;
+        }
+        damageColor.ColorDamage();
         if (healt <= 0)
         {
             kill = true;
