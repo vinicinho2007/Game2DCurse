@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3624fbb64f9e9e498e8e3f9b840b03d, type: 3}
-  m_Name: SC_coins
+  m_Script: {fileID: 11500000, guid: 834f501c76040b6428a8697c641522e2, type: 3}
+  m_Name: SO_resetCoins
   m_EditorClassIdentifier: 
-  value: 0
+  value: 1
