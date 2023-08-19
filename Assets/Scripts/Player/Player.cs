@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     [Header("Config.Movement e Jump")]
     public bool turned;
     public Rigidbody2D rig2D;
-    public float speed, speedRun, forceJump;
+    public SOFloat speed, speedRun, forceJump;
     public Vector2 friction;
     private float _speedCurrent;
 
@@ -47,12 +47,12 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            _speedCurrent = speedRun;
+            _speedCurrent = speedRun.value;
             moveAnim = nameSpeedRun;
         }
         else
         {
-            _speedCurrent = speed;
+            _speedCurrent = speed.value;
             moveAnim = nameRun;
         }
 
@@ -92,7 +92,7 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            rig2D.velocity = transform.up * forceJump;
+            rig2D.velocity = transform.up * forceJump.value;
             moveAnimBool = true;
             posY = transform.position.y;
             Invoke(nameof(AnimationJumpTo),0.01f);

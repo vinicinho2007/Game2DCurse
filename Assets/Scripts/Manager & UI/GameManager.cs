@@ -8,6 +8,9 @@ public class GameManager : MonoBehaviour
     [Header("GameManager")]
     public static GameManager instante;
 
+    [Header("Coins")]
+    public SOInt coinsScriptableObjects;
+
     [Header("Player")]
     public Transform position;
     public GameObject prefPlayer;

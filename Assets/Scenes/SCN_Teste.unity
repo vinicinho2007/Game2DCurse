@@ -1685,6 +1685,7 @@ GameObject:
   - component: {fileID: 448857913}
   - component: {fileID: 448857915}
   - component: {fileID: 448857914}
+  - component: {fileID: 448857916}
   m_Layer: 5
   m_Name: Text_Coin
   m_TagString: Untagged
@@ -1809,6 +1810,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 448857912}
   m_CullTransparentMesh: 1
+--- !u!114 &448857916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 448857912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efbff9070c67bcc4dab945acc8f20fcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 448857914}
+  soInt: {fileID: 11400000, guid: 1220e0708225d38408613a20d0884bc8, type: 2}
 --- !u!4 &449862586 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 142926852008514808, guid: 73477cb3329263c41a4f637c82562423, type: 3}
@@ -3193,7 +3208,6 @@ GameObject:
   - component: {fileID: 1057587965}
   - component: {fileID: 1057587966}
   - component: {fileID: 1057587967}
-  - component: {fileID: 1057587968}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -3228,6 +3242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe75c7a8160b0b94b8bf09304aed3643, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  coinsScriptableObjects: {fileID: 11400000, guid: 1220e0708225d38408613a20d0884bc8, type: 2}
   position: {fileID: 613374891}
   prefPlayer: {fileID: 7514808072601272334, guid: 1082cb9a59fc0604cbecc15345026507, type: 3}
   animDuration: 0.3
@@ -3248,20 +3263,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bba9b2ff550cac14893b0f04630e6a02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1057587968
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1057587964}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb15611a7f14678489116535f7651ce5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  coins: 0
-  textCoins: {fileID: 448857914}
 --- !u!1 &1101565056
 GameObject:
   m_ObjectHideFlags: 0

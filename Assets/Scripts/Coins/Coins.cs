@@ -8,7 +8,7 @@ public class Coins : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            ManagerItens.instante.AddCoins();
+            GameManager.instante.coinsScriptableObjects.value++;
             Destroy(gameObject);
         }
     }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Gun : MonoBehaviour
 {
+    public SOFloat dano;
     public Player player;
     public GameObject projectile;
     public Transform target;
@@ -28,6 +29,7 @@ public class Gun : MonoBehaviour
                 Vector3 rot = projectile.transform.eulerAngles;
                 obj.transform.localEulerAngles = new Vector3(rot.x, 180, rot.z);
             }
+            obj.GetComponent<Projectile>().dano = dano;
             shot = true;
             Invoke(nameof(DelayShot), delay);
         }

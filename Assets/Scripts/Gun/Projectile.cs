@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    public float speed, delay, dano;
+    public float speed, delay;
+    public SOFloat dano;
 
     private void Start()
     {
@@ -20,7 +21,7 @@ public class Projectile : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            collision.GetComponent<Enemy>().damage(dano);
+            collision.GetComponent<Enemy>().damage(dano.value);
             Kill();
         }
     }

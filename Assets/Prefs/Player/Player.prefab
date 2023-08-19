@@ -3141,9 +3141,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   turned: 0
   rig2D: {fileID: 7514808072601272330}
-  speed: 12
-  speedRun: 16
-  forceJump: 10
+  speed: {fileID: 11400000, guid: 6ae11d5627269b948b534490c7d2f0c4, type: 2}
+  speedRun: {fileID: 11400000, guid: 3f1866ccac5f6df45a673b3f67f14a09, type: 2}
+  forceJump: {fileID: 11400000, guid: c58b6691b2fc67940879084513097596, type: 2}
   friction: {x: -0.8, y: 0}
   anim: {fileID: 7514808071027507666}
   moveAnim: Run
@@ -3168,6 +3168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4430ca85b37024244acb7acf1e0c9d9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dano: {fileID: 11400000, guid: f5cf5e4e0d764b04e81ba3760fc99817, type: 2}
   player: {fileID: 7514808072601272332}
   projectile: {fileID: 899554110508935002, guid: 745619ca9db6e4849b498486eb9535b6, type: 3}
   target: {fileID: 6865641695909329966}
