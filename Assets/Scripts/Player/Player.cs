@@ -10,16 +10,14 @@ public class Player : MonoBehaviour
     private bool kill;
 
     [Header("Config.Movement e Jump")]
-    public bool turned;
+    public SOSetupPlayer setupPlayer;
     public Rigidbody2D rig2D;
-    public SOFloat speed, speedRun, forceJump;
-    public Vector2 friction;
+    public bool turned;
     private float _speedCurrent;
 
     [Header("Animation")]
     public Animator anim;
-    public string moveAnim, jumpAnim, jumpTriggerGroundAnim, animKill, nameRun, nameSpeedRun;
-    public float tempDelayKill;
+    private string _moveAnim;
     private bool moveAnimBool;
     private float posY;
 
@@ -47,31 +45,31 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            _speedCurrent = speedRun.value;
-            moveAnim = nameSpeedRun;
+            _speedCurrent = setupPlayer.speedRun;
+            _moveAnim = setupPlayer.nameSpeedRun;
         }
         else
         {
-            _speedCurrent = speed.value;
-            moveAnim = nameRun;
+            _speedCurrent = setupPlayer.speed;
+            _moveAnim = setupPlayer.nameRun;
         }
 
         if (Input.GetAxisRaw("Horizontal") != 0 && !moveAnimBool)
         {
-            anim.SetBool(moveAnim, true);
+            anim.SetBool(_moveAnim, true);
         }
         else
         {
-            anim.SetBool(moveAnim, false);
+            anim.SetBool(_moveAnim, false);
         }
 
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetAxisRaw("Horizontal")>0)
         {
             turned = false;
             rig2D.velocity = new Vector2(_speedCurrent, rig2D.velocity.y);
             transform.DORotate(new Vector3(0, 0, 0), 0.1f);
         }
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetAxisRaw("Horizontal")<0)
         {
             turned = true;
             rig2D.velocity = new Vector2(-_speedCurrent, rig2D.velocity.y);
@@ -80,11 +78,11 @@ public class Player : MonoBehaviour
 
         if (rig2D.velocity.x > 0)
         {
-            rig2D.velocity += friction;
+            rig2D.velocity += setupPlayer.friction;
         }
         else if (rig2D.velocity.x < 0)
         {
-            rig2D.velocity -= friction;
+            rig2D.velocity -= setupPlayer.friction;
         }
     }
 
@@ -92,7 +90,7 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            rig2D.velocity = transform.up * forceJump.value;
+            rig2D.velocity = transform.up * setupPlayer.forceJump;
             moveAnimBool = true;
             posY = transform.position.y;
             Invoke(nameof(AnimationJumpTo),0.01f);
@@ -103,13 +101,13 @@ public class Player : MonoBehaviour
     {
         if (transform.position.y > posY)
         {
-            anim.SetBool(jumpAnim, true);
+            anim.SetBool(setupPlayer.jumpAnim, true);
             posY = transform.position.y;
             Invoke(nameof(AnimationJumpTo), 0.01f);
         }
         else
         {
-            anim.SetBool(jumpAnim, false);
+            anim.SetBool(setupPlayer.jumpAnim, false);
         }
     }
 
@@ -117,7 +115,7 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ground") && moveAnimBool)
         {
-            anim.SetTrigger(jumpTriggerGroundAnim);
+            anim.SetTrigger(setupPlayer.jumpTriggerGroundAnim);
             moveAnimBool = false;
         }
     }
@@ -133,8 +131,8 @@ public class Player : MonoBehaviour
         {
             kill = true;
             moveAnimBool = false;
-            anim.SetTrigger(animKill);
-            Invoke(nameof(Kill),tempDelayKill);
+            anim.SetTrigger(setupPlayer.animKill);
+            Invoke(nameof(Kill), setupPlayer.tempDelayKill);
         }
     }
 

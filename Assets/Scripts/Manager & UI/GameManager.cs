@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 using DG.Tweening;
 
 public class GameManager : MonoBehaviour
@@ -9,9 +10,11 @@ public class GameManager : MonoBehaviour
     public static GameManager instante;
 
     [Header("Coins")]
-    public SOInt coinsScriptableObjects;
+    public SOInt coinsSO;
+    public SOBool resetCoinSO;
 
     [Header("Player")]
+    public CinemachineVirtualCamera cinemachine;
     public Transform position;
     public GameObject prefPlayer;
     public float animDuration;
@@ -36,11 +39,16 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
         StartPlayer();
+        if (resetCoinSO.value)
+        {
+            coinsSO.value = 0;
+        }
     }
     private void StartPlayer()
     {
         GameObject obj = Instantiate(prefPlayer, position);
         obj.transform.DOScale(0, animDuration).From();
+        cinemachine.Follow = obj.transform;
     }
 
     private void Update()
