@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     private bool kill;
 
     [Header("Config.Movement e Jump")]
+    public GameObject PFBParticleSystemJump;
     public SOSetupPlayer setupPlayer;
     public Rigidbody2D rig2D;
     public bool turned;
@@ -22,6 +23,7 @@ public class Player : MonoBehaviour
     private float posY;
 
     [Header("Vida")]
+    public GameObject PFBParticleSystemDano;
     public bool invincible;
     public float healt;
     public DamageColor damageColor;
@@ -94,6 +96,7 @@ public class Player : MonoBehaviour
             moveAnimBool = true;
             posY = transform.position.y;
             Invoke(nameof(AnimationJumpTo),0.01f);
+            Instantiate(PFBParticleSystemJump, transform).transform.SetParent(null);
         }
     }
 
@@ -122,6 +125,7 @@ public class Player : MonoBehaviour
 
     public void damage(float dano)
     {
+        Instantiate(PFBParticleSystemDano,transform);
         if (!invincible)
         {
             healt -= dano;

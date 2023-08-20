@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 12
   speedRun: 16
-  forceJump: 10
-  friction: {x: -0.8, y: 0}
+  forceJump: 12
+  friction: {x: -0.5, y: 0}
   jumpAnim: Jump
   jumpTriggerGroundAnim: Jump_Ground
   animKill: Kill
