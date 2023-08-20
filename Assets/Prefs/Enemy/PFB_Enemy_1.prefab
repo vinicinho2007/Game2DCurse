@@ -894,6 +894,7 @@ MonoBehaviour:
   attackAnim: Attack
   dealthAnim: Death
   delayAttack: 0.8
+  PFBparticleSystem: {fileID: 9122593983848520829, guid: d87f7744efed1eb4786074a9f6850fef, type: 3}
   dano: 1
   healt: 3
   delayKill: 1.2

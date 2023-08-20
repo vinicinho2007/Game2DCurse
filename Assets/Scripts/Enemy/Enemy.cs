@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour
     private bool attackBool;
 
     [Header("Vida e Dano")]
+    public GameObject PFBparticleSystem;
     public float dano;
     public float healt, delayKill;
     public DamageColor damageColor;
@@ -27,7 +28,7 @@ public class Enemy : MonoBehaviour
         player = collision.gameObject.GetComponent<Player>();
         if (player!=null)
         {
-            if (!attackBool&&player.healt>0)
+            if (!attackBool&&player.healt>0&&healt>0)
             {
                 anim.SetTrigger(attackAnim);
                 player.damage(dano);
@@ -44,6 +45,7 @@ public class Enemy : MonoBehaviour
 
     public void damage(float dano)
     {
+        Instantiate(PFBparticleSystem, transform);
         damageColor.ColorDamage();
         healt -= dano;
         if (healt <= 0)
