@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using Cinemachine;
 using DG.Tweening;
 
@@ -20,13 +21,15 @@ public class GameManager : MonoBehaviour
     public float animDuration;
 
     [Header("GameOver")]
+    public End end;
     public GameObject gameOver;
     public float animDurationGameOver;
 
-    [Header("MenuPause")]
-    public bool menuPauseBool;
+    [Header("Menu Pause")]
     public GameObject menuPause;
-    public float animDurationMenuPause;
+    public float animDurationMenuPause, transationSnapshot;
+    public AudioMixerSnapshot snapshotMenu, snapshotGameplay;
+    public bool openMenu;
 
     private void Start()
     {
@@ -44,6 +47,7 @@ public class GameManager : MonoBehaviour
             coinsSO.value = 0;
         }
     }
+
     private void StartPlayer()
     {
         GameObject obj = Instantiate(prefPlayer, position);
@@ -51,26 +55,29 @@ public class GameManager : MonoBehaviour
         cinemachine.Follow = obj.transform;
     }
 
+    [System.Obsolete]
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)&&!menuPauseBool)
+        if (Input.GetKeyDown(KeyCode.Escape)&&!openMenu&&!gameOver.active&&!end.end.active)
         {
-            MenuPause();
+            OpenMenuPause();
         }
     }
 
-    public void MenuPause()
+    public void OpenMenuPause()
     {
-        if (!menuPause.activeInHierarchy && !gameOver.activeInHierarchy)
-        {
-            Cursor.lockState = CursorLockMode.None;
-            StartCoroutine(CoroutineAnim(menuPause, animDurationMenuPause));
-        }
-        else if (menuPause.activeInHierarchy)
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            menuPause.SetActive(false);
-        }
+        snapshotMenu.TransitionTo(transationSnapshot);
+        Cursor.lockState = CursorLockMode.None;
+        StartCoroutine(CoroutineAnim(menuPause, animDurationMenuPause));
+        openMenu = true;
+    }
+
+    public void CloseMenuPause()
+    {
+        Time.timeScale = 1.0f;
+        snapshotGameplay.TransitionTo(transationSnapshot);
+        Cursor.lockState = CursorLockMode.Locked;
+        openMenu = false;
     }
 
     private List<GameObject> AddsObjsAnimacao(GameObject obj)
@@ -94,6 +101,12 @@ public class GameManager : MonoBehaviour
             listObjs[i].gameObject.SetActive(true);
             listObjs[i].transform.DOScale(0, durationAnim).From();
         }
+        Invoke(nameof(StopTime), durationAnim);
+    }
+
+    private void StopTime()
+    {
+        Time.timeScale = 0.0f;
     }
 
     public void GameOver()

@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!kill)
+        if (!kill && !gameManager.openMenu)
         {
             Jump();
             Move();
@@ -62,6 +62,7 @@ public class Player : MonoBehaviour
         }
         else
         {
+            anim.SetBool(setupPlayer.nameSpeedRun, false);
             anim.SetBool(_moveAnim, false);
         }
 

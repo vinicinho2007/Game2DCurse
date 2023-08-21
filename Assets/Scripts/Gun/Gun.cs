@@ -5,25 +5,26 @@ using TMPro;
 
 public class Gun : MonoBehaviour
 {
-    public TextMeshProUGUI textMunitions;
-    public SOFloat dano, maxMunition;
+    [Header("Outros Scripts")]
+    private GameManager gameManager;
+
+    public SOFloat dano;
     public Player player;
     public GameObject projectile;
     public Transform target;
     public float delay;
-    public float _maxMunition;
+    public SOInt maxMunition, munitionContinue;
     private bool shot;
 
     private void Start()
     {
-        textMunitions = GameObject.Find("Text_Munition").GetComponent<TextMeshProUGUI>();
-        _maxMunition = maxMunition.value;
+        gameManager = GameObject.FindObjectOfType<GameManager>();
+        munitionContinue.value = maxMunition.value;
     }
 
     private void Update()
     {
-        textMunitions.text = "x" + _maxMunition;
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0)&& !gameManager.openMenu)
         {
             Shot();
         }
@@ -31,9 +32,9 @@ public class Gun : MonoBehaviour
 
     private void Shot()
     {
-        if (!shot && _maxMunition > 0)
+        if (!shot && munitionContinue.value > 0)
         {
-            _maxMunition--;
+            munitionContinue.value--;
             GameObject obj = Instantiate(projectile, target.position, projectile.transform.rotation);
             if (player.turned)
             {
