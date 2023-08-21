@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3624fbb64f9e9e498e8e3f9b840b03d, type: 3}
-  m_Name: Munition 1
+  m_Name: Munition_Cotinue 1
   m_EditorClassIdentifier: 
-  value: 5
+  value: 0

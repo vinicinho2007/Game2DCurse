@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60fa6f08826418b48b76e1570603de75, type: 3}
+  m_Script: {fileID: 11500000, guid: d3624fbb64f9e9e498e8e3f9b840b03d, type: 3}
   m_Name: MaxMunition_Gun 1
   m_EditorClassIdentifier: 
   value: 10
